@@ -8,6 +8,7 @@ import org.koin.dsl.module
 import ru.ikom.feature_catalog.data.CatalogRepositoryImpl
 import ru.ikom.feature_catalog.domain.CatalogRepository
 import ru.ikom.feature_catalog.domain.FetchCategoriesUseCase
+import ru.ikom.feature_catalog.domain.FetchProductsUseCase
 import ru.ikom.feature_catalog.presentation.CatalogViewModel
 
 val featureCatalogModule = module {
@@ -27,7 +28,11 @@ val featureCatalogModule = module {
         FetchCategoriesUseCase(get())
     }
 
+    factory<FetchProductsUseCase> {
+        FetchProductsUseCase(get())
+    }
+
     viewModel<CatalogViewModel> {
-        CatalogViewModel(get(), get())
+        CatalogViewModel(get(), get(), get())
     }
 }
