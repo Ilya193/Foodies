@@ -38,7 +38,9 @@ data class ProductUi(
             measureUnit,
             name,
             priceCurrent,
-            proteinsPer100Grams
+            priceOld,
+            proteinsPer100Grams,
+            count
         )
 }
 

@@ -11,5 +11,8 @@ data class CacheProduct(
     val measureUnit: String,
     val name: String,
     val priceCurrent: Int,
+    val priceOld: Int? = null,
     val proteinsPer100Grams: Double,
+    val count: Int = 1,
+    val sum: Int = 0
 )

@@ -253,7 +253,9 @@ fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = ko
                         .align(Alignment.BottomCenter)
                         .background(Color.White)
                 ) {
-                    ProductsAmount(it)
+                    ProductsAmount(it) {
+                        viewModel.add()
+                    }
                 }
             }
         }

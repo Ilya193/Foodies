@@ -18,17 +18,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ru.ikom.common.Orange
 import ru.ikom.feature_catalog.R
 
 @Composable
-fun ProductsAmount(sum: Int) {
+fun ProductsAmount(sum: Int, add: () -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     Card(
         modifier = Modifier.fillMaxSize().padding(8.dp).clickable(
             interactionSource = interactionSource,
             indication = null
-        ) { },
+        ) { add() },
         colors = CardDefaults.cardColors(
             containerColor = Orange
         )
@@ -42,7 +43,7 @@ fun ProductsAmount(sum: Int) {
                 painter = painterResource(R.drawable.cart),
                 contentDescription = null
             )
-            Text(text = "$sum ₽", style = TextStyle(color = Color.White))
+            Text(text = "$sum ₽", style = TextStyle(color = Color.White, fontSize = 16.sp))
         }
     }
 }

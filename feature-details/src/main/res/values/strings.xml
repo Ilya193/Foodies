@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="weight">Вес</string>
+    <string name="energy_value">Энерг. ценность</string>
+    <string name="squirrels">Белки</string>
+    <string name="fats">Жиры</string>
+    <string name="carbohydrates">Углеводы</string>
+    <string name="price_current">В корзину за</string>
+    <string name="currency">₽</string>
+</resources>

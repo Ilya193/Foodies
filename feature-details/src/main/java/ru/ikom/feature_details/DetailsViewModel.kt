@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import ru.ikom.common.Storage
 
 class DetailsViewModel(
+    private val router: DetailsRouter,
     private val gson: Gson,
     private val storage: Storage,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
@@ -27,6 +28,12 @@ class DetailsViewModel(
             _uiState.value = DetailsUiState(isError = true)
         }
     }
+
+    fun add(product: CacheProductUi) = viewModelScope.launch(dispatcher) {
+        storage.save(product.toCacheProduct())
+    }
+
+    fun pop() = viewModelScope.launch(dispatcher) { router.comeback() }
 }
 
 data class DetailsUiState(

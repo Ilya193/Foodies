@@ -1,5 +1,7 @@
 package ru.ikom.feature_details
 
+import ru.ikom.common.CacheProduct
+
 data class CacheProductUi(
     val carbohydratesPer100Grams: Double,
     val description: String,
@@ -11,5 +13,23 @@ data class CacheProductUi(
     val measureUnit: String,
     val name: String,
     val priceCurrent: Int,
+    val priceOld: Int? = null,
     val proteinsPer100Grams: Double,
-)
+    val count: Int = 1
+) {
+    fun toCacheProduct(): CacheProduct =
+        CacheProduct(
+            carbohydratesPer100Grams,
+            description,
+            energyPer100Grams,
+            fatsPer100Grams,
+            id,
+            image,
+            measure,
+            measureUnit,
+            name,
+            priceCurrent,
+            priceOld,
+            proteinsPer100Grams
+        )
+}

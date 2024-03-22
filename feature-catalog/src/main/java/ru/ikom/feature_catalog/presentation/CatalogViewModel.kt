@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.ikom.common.Storage
 import ru.ikom.feature_catalog.domain.FetchCategoriesUseCase
 import ru.ikom.feature_catalog.domain.FetchProductsUseCase
 import ru.ikom.feature_catalog.domain.LoadResult
@@ -22,6 +23,7 @@ class CatalogViewModel(
     private val categoriesUseCase: FetchCategoriesUseCase,
     private val productsUseCase: FetchProductsUseCase,
     private val gson: Gson,
+    private val storage: Storage,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
 
@@ -184,5 +186,10 @@ class CatalogViewModel(
 
     fun openDetails(item: ProductUi) = viewModelScope.launch(dispatcher) {
         router.openDetails(gson.toJson(item.toCacheProduct()))
+    }
+
+    fun add() = viewModelScope.launch(dispatcher) {
+        val filteredProducts = showProducts.filter { it.buy }
+        storage.save(filteredProducts.map { it.toCacheProduct() })
     }
 }

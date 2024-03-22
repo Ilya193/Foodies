@@ -5,6 +5,6 @@ import org.koin.dsl.module
 
 val featureDetailsProduct = module {
     viewModel<DetailsViewModel> {
-        DetailsViewModel(get(), get())
+        DetailsViewModel(get(), get(), get())
     }
 }

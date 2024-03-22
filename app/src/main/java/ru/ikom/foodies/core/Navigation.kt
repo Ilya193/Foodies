@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import ru.ikom.feature_catalog.presentation.CatalogRouter
+import ru.ikom.feature_details.DetailsRouter
 import ru.ikom.foodies.presentation.SplashRouter
 
 interface Navigation<T> {
@@ -12,7 +13,7 @@ interface Navigation<T> {
     fun update(value: T)
     fun coup()
 
-    class Base : Navigation<Screen>, SplashRouter, CatalogRouter {
+    class Base : Navigation<Screen>, SplashRouter, CatalogRouter, DetailsRouter {
         private val screen = MutableStateFlow<Screen>(Screen.Start)
 
         override fun read(): StateFlow<Screen> = screen.asStateFlow()
@@ -32,6 +33,10 @@ interface Navigation<T> {
         override fun openDetails(data: String) {
             update(DetailsScreen(data))
         }
+
+        override fun comeback() {
+            update(Screen.Pop)
+        }
     }
 }
 
@@ -46,7 +51,7 @@ interface Screen {
 
     abstract class ReplaceWithArguments(
         private val route: String,
-        private val data: String
+        private val data: String,
     ) : Screen {
         override fun show(navController: NavController) = navController.navigate(
             route.replace(
@@ -68,9 +73,15 @@ interface Screen {
 
     data object Start : Screen
     data object Coup : Screen
+
+    data object Pop : Screen {
+        override fun show(navController: NavController) {
+            navController.popBackStack()
+        }
+    }
 }
 
 class CatalogScreen : Screen.ReplaceWithClear(Screens.Catalog)
 class DetailsScreen(
-    data: String
+    data: String,
 ) : Screen.ReplaceWithArguments(Screens.Details, data)
