@@ -28,6 +28,7 @@ data class ProductUi(
 data class CatalogUiState(
     val categories: List<CategoryUi> = emptyList(),
     val products: List<ProductUi> = emptyList(),
+    val searchProducts: List<ProductUi>? = null,
     val sum: Int? = null,
     val isLoading: Boolean = false,
     val isError: Boolean = false

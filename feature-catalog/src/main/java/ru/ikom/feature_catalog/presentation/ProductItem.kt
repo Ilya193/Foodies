@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.koinViewModel
+import ru.ikom.common.Gray
 import ru.ikom.feature_catalog.R
 
 @Composable
@@ -41,7 +42,7 @@ fun ProductItem(
         modifier = Modifier.height(290.dp).padding(8.dp)
     ) {
         Box(
-            modifier = Modifier.fillMaxSize().background(Color(0xFFF5F5F5))
+            modifier = Modifier.fillMaxSize().background(Gray)
         ) {
             Column {
                 Box {

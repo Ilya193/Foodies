@@ -2,6 +2,7 @@ package ru.ikom.feature_catalog.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,19 +15,34 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 import ru.ikom.feature_catalog.R
 
@@ -35,6 +51,9 @@ import ru.ikom.feature_catalog.R
 fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = koinViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
 
+    var searchMode by remember { mutableStateOf(false) }
+    var dish by remember { mutableStateOf("") }
+
     LaunchedEffect(Unit) {
         viewModel.fetchData()
     }
@@ -42,14 +61,65 @@ fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = ko
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
+                modifier = Modifier.padding(8.dp),
                 navigationIcon = {
-                    Image(painter = painterResource(R.drawable.filter), contentDescription = null)
+                    if (!searchMode)
+                        Image(
+                            painter = painterResource(R.drawable.filter),
+                            contentDescription = null
+                        )
+                    else
+                        Image(
+                            modifier = Modifier.clickable {
+                                searchMode = false
+                                dish = ""
+                            },
+                            painter = painterResource(R.drawable.back), contentDescription = null
+                        )
                 },
                 title = {
-                    Image(painter = painterResource(R.drawable.logo), contentDescription = null)
+                    if (!searchMode)
+                        Image(painter = painterResource(R.drawable.logo), contentDescription = null)
+                    else {
+                        var showCancel by remember { mutableStateOf(false) }
+                        OutlinedTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            value = dish,
+                            onValueChange = { value ->
+                                showCancel = value.isNotEmpty()
+                                dish = value
+                            },
+                            placeholder = { Text(text = stringResource(R.string.search_dish)) },
+                            shape = RoundedCornerShape(0.dp),
+                            colors = TextFieldDefaults.colors(
+                                unfocusedIndicatorColor = Color.Transparent,
+                                unfocusedContainerColor = Color.Transparent,
+                                focusedContainerColor = Color.Transparent,
+                                focusedIndicatorColor = Color.Transparent,
+                            ),
+                            trailingIcon = {
+                                if (showCancel)
+                                    Icon(
+                                        modifier = Modifier.clickable {
+                                            searchMode = false
+                                            dish = ""
+                                        },
+                                        painter = painterResource(R.drawable.cancel),
+                                        contentDescription = null
+                                    )
+                            }
+                        )
+                    }
+
                 },
                 actions = {
-                    Image(painter = painterResource(R.drawable.search), contentDescription = null)
+                    if (!searchMode)
+                        Image(
+                            modifier = Modifier.clickable {
+                                searchMode = true
+                            },
+                            painter = painterResource(R.drawable.search), contentDescription = null
+                        )
                 }
             )
         },
