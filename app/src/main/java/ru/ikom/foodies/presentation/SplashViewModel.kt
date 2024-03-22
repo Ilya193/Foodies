@@ -1,4 +1,4 @@
-package ru.ikom.foodies
+package ru.ikom.foodies.presentation
 
 import androidx.lifecycle.ViewModel
 

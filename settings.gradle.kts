@@ -17,3 +17,4 @@ rootProject.name = "Foodies"
 include(":app")
 include(":feature-catalog")
 include(":common")
+include(":feature-details")

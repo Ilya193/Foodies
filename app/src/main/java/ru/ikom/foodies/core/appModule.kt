@@ -1,23 +1,12 @@
-package ru.ikom.foodies
+package ru.ikom.foodies.core
 
-import android.app.Application
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.context.startKoin
 import org.koin.dsl.module
-import ru.ikom.feature_catalog.di.featureCatalogModule
+import ru.ikom.common.Storage
 import ru.ikom.feature_catalog.presentation.CatalogRouter
-
-class App : Application() {
-
-    override fun onCreate() {
-        super.onCreate()
-        startKoin {
-            androidContext(this@App)
-            modules(appModule, featureCatalogModule)
-        }
-    }
-}
+import ru.ikom.foodies.presentation.MainViewModel
+import ru.ikom.foodies.presentation.SplashRouter
+import ru.ikom.foodies.presentation.SplashViewModel
 
 val appModule = module {
     val navigation = Navigation.Base()
@@ -32,6 +21,10 @@ val appModule = module {
 
     single<CatalogRouter> {
         navigation
+    }
+
+    single<Storage> {
+        StorageImpl()
     }
 
     viewModel<MainViewModel> {

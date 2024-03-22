@@ -14,12 +14,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,26 +33,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import ru.ikom.common.Orange
 import ru.ikom.feature_catalog.R
@@ -63,9 +55,6 @@ import ru.ikom.feature_catalog.R
 @Composable
 fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = koinViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
-
-    val listState = rememberLazyGridState()
-    val coroutineScope = rememberCoroutineScope()
 
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -91,7 +80,8 @@ fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = ko
                         ) {
                             if (filterMode.isNotEmpty()) {
                                 Box(
-                                    modifier = Modifier.size(17.dp)
+                                    modifier = Modifier
+                                        .size(17.dp)
                                         .offset(y = (-10).dp)
                                         .clip(CircleShape)
                                         .align(Alignment.TopEnd)
@@ -214,6 +204,7 @@ fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = ko
                                 Text(text = stringResource(id = R.string.enter_name_dish))
                             }
                         }
+
                         is NothingFound.Search -> {
                             Box(
                                 modifier = Modifier
@@ -223,6 +214,7 @@ fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = ko
                                 Text(text = stringResource(id = R.string.nothing_found))
                             }
                         }
+
                         is NothingFound.Filter -> {
                             Box(
                                 modifier = Modifier
@@ -237,13 +229,17 @@ fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = ko
                 }
 
                 if ((uiState.products.isNotEmpty() && uiState.searchMode || !uiState.searchMode)) {
-                    LazyVerticalGrid(columns = GridCells.Adaptive(170.dp), state = listState) {
+                    LazyVerticalGrid(columns = GridCells.Adaptive(170.dp)) {
                         itemsIndexed(
                             items = uiState.products,
                             key = { index, item -> item.id }) { index, item ->
-                            ProductItem(item, index) {
-                                viewModel.onClickProduct(item, index)
-                            }
+                            ProductItem(
+                                item,
+                                index,
+                                openDetails = viewModel::openDetails,
+                                onClickBuy = {
+                                    viewModel.onClickBuy(item, index)
+                                })
                         }
                     }
                 }
@@ -270,7 +266,6 @@ fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = ko
                     showBottomSheet = false
                     filterMode.clear()
                     filterMode.addAll(it)
-                    println("s149 $it")
                     viewModel.filter(it)
                 }
             }

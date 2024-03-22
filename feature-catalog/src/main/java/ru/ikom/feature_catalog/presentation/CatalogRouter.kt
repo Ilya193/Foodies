@@ -1,3 +1,5 @@
 package ru.ikom.feature_catalog.presentation
 
-interface CatalogRouter
+interface CatalogRouter {
+    fun openDetails(data: String)
+}

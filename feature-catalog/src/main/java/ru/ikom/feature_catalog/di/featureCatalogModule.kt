@@ -33,6 +33,6 @@ val featureCatalogModule = module {
     }
 
     viewModel<CatalogViewModel> {
-        CatalogViewModel(get(), get(), get())
+        CatalogViewModel(get(), get(), get(), get())
     }
 }

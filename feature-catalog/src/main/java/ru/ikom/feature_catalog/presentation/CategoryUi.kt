@@ -1,5 +1,7 @@
 package ru.ikom.feature_catalog.presentation
 
+import ru.ikom.common.CacheProduct
+
 data class CategoryUi(
     val id: Int,
     val name: String,
@@ -23,7 +25,22 @@ data class ProductUi(
     val tagIds: List<Int>,
     val count: Int = 1,
     val buy: Boolean = false
-)
+) {
+    fun toCacheProduct(): CacheProduct =
+        CacheProduct(
+            carbohydratesPer100Grams,
+            description,
+            energyPer100Grams,
+            fatsPer100Grams,
+            id,
+            image,
+            measure,
+            measureUnit,
+            name,
+            priceCurrent,
+            proteinsPer100Grams
+        )
+}
 
 sealed interface NothingFound {
     data object Filter : NothingFound

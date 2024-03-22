@@ -1,10 +1,11 @@
-package ru.ikom.foodies
+package ru.ikom.foodies.core
 
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import ru.ikom.feature_catalog.presentation.CatalogRouter
+import ru.ikom.foodies.presentation.SplashRouter
 
 interface Navigation<T> {
     fun read(): StateFlow<T>
@@ -27,6 +28,10 @@ interface Navigation<T> {
         override fun openCatalog() {
             update(CatalogScreen())
         }
+
+        override fun openDetails(data: String) {
+            update(DetailsScreen(data))
+        }
     }
 }
 
@@ -35,13 +40,37 @@ interface Screen {
 
     abstract class Replace(
         private val route: String,
-    ): Screen {
+    ) : Screen {
         override fun show(navController: NavController) = navController.navigate(route)
+    }
+
+    abstract class ReplaceWithArguments(
+        private val route: String,
+        private val data: String
+    ) : Screen {
+        override fun show(navController: NavController) = navController.navigate(
+            route.replace(
+                "{data}",
+                data
+            )
+        )
+    }
+
+    abstract class ReplaceWithClear(
+        private val route: String,
+    ) : Screen {
+        override fun show(navController: NavController) = navController.navigate(route) {
+            popUpTo(navController.graph.startDestinationId) {
+                inclusive = true
+            }
+        }
     }
 
     data object Start : Screen
     data object Coup : Screen
 }
 
-class SplashScreen : Screen.Replace(Screens.Splash)
-class CatalogScreen : Screen.Replace(Screens.Catalog)
+class CatalogScreen : Screen.ReplaceWithClear(Screens.Catalog)
+class DetailsScreen(
+    data: String
+) : Screen.ReplaceWithArguments(Screens.Details, data)

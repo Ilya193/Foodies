@@ -2,6 +2,7 @@ package ru.ikom.feature_catalog.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +21,7 @@ class CatalogViewModel(
     private val router: CatalogRouter,
     private val categoriesUseCase: FetchCategoriesUseCase,
     private val productsUseCase: FetchProductsUseCase,
+    private val gson: Gson,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
 
@@ -70,7 +72,7 @@ class CatalogViewModel(
         }
     }
 
-    fun onClickProduct(item: ProductUi, index: Int) = viewModelScope.launch(dispatcher) {
+    fun onClickBuy(item: ProductUi, index: Int) = viewModelScope.launch(dispatcher) {
         showProducts[index] = showProducts[index].copy(count = item.count, buy = true)
         val state = _uiState.value
         _uiState.update {
@@ -178,5 +180,9 @@ class CatalogViewModel(
                 nothingFound = if (showProducts.isEmpty()) NothingFound.Filter else NothingFound.Initial
             )
         }
+    }
+
+    fun openDetails(item: ProductUi) = viewModelScope.launch(dispatcher) {
+        router.openDetails(gson.toJson(item.toCacheProduct()))
     }
 }

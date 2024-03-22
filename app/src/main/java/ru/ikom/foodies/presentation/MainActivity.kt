@@ -1,4 +1,4 @@
-package ru.ikom.foodies
+package ru.ikom.foodies.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -31,6 +30,9 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import org.koin.androidx.compose.koinViewModel
 import ru.ikom.feature_catalog.presentation.CatalogScreen
+import ru.ikom.feature_details.DetailsScreen
+import ru.ikom.foodies.R
+import ru.ikom.foodies.core.Screens
 import ru.ikom.foodies.ui.theme.FoodiesTheme
 import ru.ikom.foodies.ui.theme.Orange
 
@@ -81,6 +83,11 @@ fun Content(viewModel: MainViewModel = koinViewModel()) {
 
         composable(Screens.Catalog) {
             CatalogScreen(navController = navController)
+        }
+
+        composable(Screens.Details) {
+            val product = it.arguments?.getString("data") ?: ""
+            DetailsScreen(product)
         }
     }
 }

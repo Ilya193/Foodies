@@ -1,7 +1,8 @@
-package ru.ikom.foodies
+package ru.ikom.foodies.core
 
 
 object Screens {
     const val Splash = "Splash"
     const val Catalog = "Catalog"
+    const val Details = "Details/{data}"
 }
