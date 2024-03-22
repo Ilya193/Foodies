@@ -1,6 +1,5 @@
 package ru.ikom.feature_catalog.presentation
 
-import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
@@ -59,7 +58,6 @@ class CatalogViewModel(
 
     fun onClickCategory(item: CategoryUi) = viewModelScope.launch(dispatcher) {
         val index = categories.indexOf(item)
-        val state = _uiState.value
         if (!categories[index].selected) {
             for (i in 0..<categories.size) {
                 categories[i] = if (i == index) categories[i].copy(selected = true)
@@ -137,9 +135,8 @@ class CatalogViewModel(
 
     fun inputDish(dish: String) = viewModelScope.launch(dispatcher) {
         if (dish.isEmpty()) {
-            _uiState.value = CatalogUiState(products = emptyList())
-        }
-        else {
+            _uiState.update { it.copy(products = emptyList(), nothingFound = NothingFound.Initial) }
+        } else {
             showProducts.clear()
             products.forEach {
                 if (dish in it.description.lowercase(Locale.getDefault())) {
@@ -147,8 +144,39 @@ class CatalogViewModel(
                 }
             }
             _uiState.update {
-                it.copy(products = showProducts.toList())
+                it.copy(
+                    products = showProducts.toList(),
+                    nothingFound = if (showProducts.isEmpty()) NothingFound.Search else NothingFound.Initial
+                )
             }
+        }
+    }
+
+    fun filter(filterMode: List<Int>) = viewModelScope.launch(dispatcher) {
+        if (filterMode.isEmpty()) {
+            showProducts = products.toMutableList()
+            _uiState.value = CatalogUiState(
+                categories = categories.toList(),
+                products = showProducts.toList(),
+            )
+        } else {
+            showProducts.clear()
+            products.forEach { product ->
+                var add = false
+                filterMode.forEach { mode ->
+                    when (mode) {
+                        1 -> add = 2 in product.tagIds
+                        2 -> add = 4 in product.tagIds
+                        3 -> add = product.priceOld != null
+                    }
+                }
+                if (add) showProducts.add(product)
+            }
+            _uiState.value = CatalogUiState(
+                categories = categories.toList(),
+                products = showProducts.toList(),
+                nothingFound = if (showProducts.isEmpty()) NothingFound.Filter else NothingFound.Initial
+            )
         }
     }
 }

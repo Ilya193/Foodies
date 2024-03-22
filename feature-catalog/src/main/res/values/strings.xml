@@ -2,5 +2,12 @@
 <resources>
     <string name="search_dish">Найти блюдо</string>
     <string name="enter_name_dish">Введите название блюда, которое ищете</string>
+    <string name="nothing_found">Ничего не нашлось :(</string>
+    <string name="no_dishes_found">Таких блюд нет :(\n Попробуйте изменить фильтры</string>
     <string name="currency">₽</string>
+    <string name="pick_up_dishes">Подобрать блюда\n</string>
+    <string name="ready">Готово</string>
+    <string name="without_meat">Без мяса</string>
+    <string name="acute">Острое</string>
+    <string name="with_discount">Со скидкой</string>
 </resources>
