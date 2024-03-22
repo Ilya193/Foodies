@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -39,16 +40,22 @@ fun ProductItem(
     onClick: () -> Unit,
 ) {
     Card(
-        modifier = Modifier.height(290.dp).padding(8.dp)
+        modifier = Modifier
+            .height(290.dp)
+            .padding(8.dp)
     ) {
         Box(
-            modifier = Modifier.fillMaxSize().background(Gray)
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Gray)
         ) {
             Column {
                 Box {
                     if (item.priceOld != null)
                         Image(
-                            modifier = Modifier.align(Alignment.TopStart).padding(4.dp),
+                            modifier = Modifier
+                                .align(Alignment.TopStart)
+                                .padding(4.dp),
                             painter = painterResource(R.drawable.discount),
                             contentDescription = null
                         )
@@ -61,14 +68,17 @@ fun ProductItem(
                 )
                 Text(
                     modifier = Modifier.padding(horizontal = 10.dp),
-                    text = item.measure.toString(),
+                    text = item.measure.toString() + " " + item.measureUnit,
                     style = TextStyle(fontSize = 14.sp, color = Color.Gray)
                 )
             }
 
             if (item.buy) {
                 Row(
-                    modifier = Modifier.padding(vertical = 10.dp).fillMaxWidth().height(40.dp)
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
+                        .fillMaxWidth()
+                        .height(40.dp)
                         .align(Alignment.BottomCenter),
                     horizontalArrangement = Arrangement.SpaceAround,
                     verticalAlignment = Alignment.CenterVertically
@@ -83,8 +93,11 @@ fun ProductItem(
                 }
             } else {
                 Card(
-                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp).fillMaxWidth()
-                        .height(40.dp).align(Alignment.BottomCenter)
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp, vertical = 10.dp)
+                        .fillMaxWidth()
+                        .height(40.dp)
+                        .align(Alignment.BottomCenter)
                         .clickable { onClick() },
                     colors = CardDefaults.cardColors(
                         containerColor = Color.White
@@ -98,11 +111,11 @@ fun ProductItem(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        Text(text = item.priceCurrent.toString() + " ₽")
+                        Text(text = item.priceCurrent.toString() + " " + stringResource(R.string.currency))
                         if (item.priceOld != null)
                             Text(
                                 modifier = Modifier.padding(start = 4.dp),
-                                text = item.priceOld.toString() + " ₽",
+                                text = item.priceOld.toString() + " " + stringResource(R.string.currency),
                                 style = TextStyle(
                                     textDecoration = TextDecoration.LineThrough,
                                     color = Color.Gray

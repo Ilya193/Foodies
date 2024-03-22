@@ -25,11 +25,19 @@ data class ProductUi(
     val buy: Boolean = false
 )
 
+sealed interface NothingFound {
+    data object Filter : NothingFound
+    data object Search : NothingFound
+
+    data object Initial : NothingFound
+}
+
 data class CatalogUiState(
     val categories: List<CategoryUi> = emptyList(),
     val products: List<ProductUi> = emptyList(),
-    val searchProducts: List<ProductUi>? = null,
     val sum: Int? = null,
+    val searchMode: Boolean = false,
+    val nothingFound: NothingFound = NothingFound.Initial,
     val isLoading: Boolean = false,
     val isError: Boolean = false
 )

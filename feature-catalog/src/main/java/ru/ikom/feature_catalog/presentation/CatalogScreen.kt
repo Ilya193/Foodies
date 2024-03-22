@@ -16,14 +16,16 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -32,17 +34,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 import ru.ikom.feature_catalog.R
 
@@ -53,6 +50,9 @@ fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = ko
 
     var searchMode by remember { mutableStateOf(false) }
     var dish by remember { mutableStateOf("") }
+
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState()
 
     LaunchedEffect(Unit) {
         viewModel.fetchData()
@@ -65,6 +65,7 @@ fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = ko
                 navigationIcon = {
                     if (!searchMode)
                         Image(
+                            modifier = Modifier.clickable { showBottomSheet = true },
                             painter = painterResource(R.drawable.filter),
                             contentDescription = null
                         )
@@ -72,6 +73,7 @@ fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = ko
                         Image(
                             modifier = Modifier.clickable {
                                 searchMode = false
+                                viewModel.changeMode(false)
                                 dish = ""
                             },
                             painter = painterResource(R.drawable.back), contentDescription = null
@@ -88,6 +90,7 @@ fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = ko
                             onValueChange = { value ->
                                 showCancel = value.isNotEmpty()
                                 dish = value
+                                viewModel.inputDish(dish)
                             },
                             placeholder = { Text(text = stringResource(R.string.search_dish)) },
                             shape = RoundedCornerShape(0.dp),
@@ -102,6 +105,7 @@ fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = ko
                                     Icon(
                                         modifier = Modifier.clickable {
                                             searchMode = false
+                                            viewModel.changeMode(false)
                                             dish = ""
                                         },
                                         painter = painterResource(R.drawable.cancel),
@@ -117,6 +121,7 @@ fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = ko
                         Image(
                             modifier = Modifier.clickable {
                                 searchMode = true
+                                viewModel.changeMode(true)
                             },
                             painter = painterResource(R.drawable.search), contentDescription = null
                         )
@@ -124,9 +129,18 @@ fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = ko
             )
         },
     ) { padding ->
-        Box(modifier = Modifier.fillMaxSize().padding(padding)) {
-            Column(modifier = Modifier.fillMaxWidth().wrapContentHeight()) {
-                if (uiState.categories.isNotEmpty()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+            ) {
+
+                if (uiState.categories.isNotEmpty() && !searchMode) {
                     LazyRow {
                         items(items = uiState.categories, key = { item -> item.id }) { item ->
                             CategoryItem(item) {
@@ -136,7 +150,17 @@ fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = ko
                     }
                 }
 
-                if (uiState.products.isNotEmpty()) {
+                if (uiState.searchMode && uiState.products.isEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(text = stringResource(id = R.string.enter_name_dish))
+                    }
+                }
+
+                if ((uiState.products.isNotEmpty() && uiState.searchMode || !uiState.searchMode)) {
                     LazyVerticalGrid(columns = GridCells.Adaptive(170.dp)) {
                         itemsIndexed(
                             items = uiState.products,
@@ -151,10 +175,26 @@ fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = ko
 
             uiState.sum?.let {
                 Box(
-                    modifier = Modifier.fillMaxWidth().height(72.dp).align(Alignment.BottomCenter)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(72.dp)
+                        .align(Alignment.BottomCenter)
                         .background(Color.White)
                 ) {
                     ProductsAmount(it)
+                }
+            }
+        }
+
+        if (showBottomSheet) {
+            ModalBottomSheet(
+                onDismissRequest = { showBottomSheet = false },
+                sheetState = bottomSheetState
+            ) {
+                Box(modifier = Modifier.height(300.dp)) {
+                    Button(onClick = {  }) {
+                        Text(text = "Click")
+                    }
                 }
             }
         }
