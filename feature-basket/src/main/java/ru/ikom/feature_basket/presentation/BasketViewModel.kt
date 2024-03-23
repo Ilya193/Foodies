@@ -12,7 +12,7 @@ class BasketViewModel(
     private val router: BasketRouter,
     private val storage: Storage,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
-): BaseViewModel<BasketUiState>(router, BasketUiState(isLoading = true)) {
+) : BaseViewModel<BasketUiState>(router, BasketUiState(isLoading = true)) {
 
     private var products = mutableListOf<ProductUi>()
     fun fetchProducts() = viewModelScope.launch(dispatcher) {

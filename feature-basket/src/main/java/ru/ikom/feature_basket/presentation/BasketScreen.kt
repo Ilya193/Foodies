@@ -28,6 +28,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.koinViewModel
+import ru.ikom.common.ErrorMessage
+import ru.ikom.common.LoadData
 import ru.ikom.feature_basket.R
 import ru.ikom.feature_basket.presentation.ui.CardProduct
 import ru.ikom.feature_basket.presentation.ui.ProductsAmount
@@ -42,52 +44,63 @@ fun BasketScreen(viewModel: BasketViewModel = koinViewModel()) {
         viewModel.fetchProducts()
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(modifier = Modifier.padding(8.dp), navigationIcon = {
-                Image(modifier = Modifier.clickable(
-                    interactionSource = interactionSource,
-                    indication = null
-                ) {
-                    viewModel.comeback()
-                }, painter = painterResource(R.drawable.back), contentDescription = null
-                )
-            }, title = {
-                Text(
-                    modifier = Modifier.padding(horizontal = 12.dp),
-                    text = stringResource(R.string.basket),
-                    style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                )
-            })
-        }
-    ) { padding ->
+    if (uiState.isLoading)
+        LoadData()
+    else if (uiState.isError)
+        ErrorMessage { viewModel.fetchProducts() }
+    else {
+        Scaffold(
+            topBar = {
+                TopAppBar(modifier = Modifier.padding(8.dp), navigationIcon = {
+                    Image(
+                        modifier = Modifier.clickable(
+                            interactionSource = interactionSource,
+                            indication = null
+                        ) {
+                            viewModel.comeback()
+                        }, painter = painterResource(R.drawable.back), contentDescription = null
+                    )
+                }, title = {
+                    Text(
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        text = stringResource(R.string.basket),
+                        style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                    )
+                })
+            }
+        ) { padding ->
 
-        Box(modifier = Modifier.fillMaxSize().padding(padding)) {
-            if (uiState.products.isNotEmpty()) {
-                LazyColumn(
-                    modifier = Modifier.align(Alignment.TopCenter).background(Color(0xFFF5F5F5))
-                ) {
-                    itemsIndexed(
-                        items = uiState.products,
-                        key = { _, item -> item.id }) { index, item ->
-                        CardProduct(item = item,
-                            minus = {
-                                viewModel.minus(item, index)
-                            },
-                            plus = {
-                                viewModel.plus(item, index)
-                            })
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)) {
+                if (uiState.products.isNotEmpty()) {
+                    LazyColumn(
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .background(Color(0xFFF5F5F5))
+                    ) {
+                        itemsIndexed(
+                            items = uiState.products,
+                            key = { _, item -> item.id }) { index, item ->
+                            CardProduct(item = item,
+                                minus = {
+                                    viewModel.minus(item, index)
+                                },
+                                plus = {
+                                    viewModel.plus(item, index)
+                                })
+                        }
                     }
-                }
 
-                if (uiState.sum != 0) {
-                    Box(modifier = Modifier.align(Alignment.BottomCenter)) {
-                        ProductsAmount(uiState.sum)
+                    if (uiState.sum != 0) {
+                        Box(modifier = Modifier.align(Alignment.BottomCenter)) {
+                            ProductsAmount(uiState.sum)
+                        }
                     }
-                }
-            } else {
-                Box(modifier = Modifier.align(Alignment.Center)) {
-                    Text(text = stringResource(R.string.empty_dish))
+                } else {
+                    Box(modifier = Modifier.align(Alignment.Center)) {
+                        Text(text = stringResource(R.string.empty_dish))
+                    }
                 }
             }
         }

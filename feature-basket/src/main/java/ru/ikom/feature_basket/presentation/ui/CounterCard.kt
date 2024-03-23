@@ -20,10 +20,12 @@ import androidx.compose.ui.unit.dp
 fun CounterCard(painter: Painter, action: () -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     Card(
-        modifier = Modifier.size(44.dp).clickable(
-            interactionSource = interactionSource,
-            indication = null
-        ) { action() },
+        modifier = Modifier
+            .size(44.dp)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null
+            ) { action() },
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFFF5F5F5)
         ),

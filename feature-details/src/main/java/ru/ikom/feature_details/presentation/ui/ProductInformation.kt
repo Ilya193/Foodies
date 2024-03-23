@@ -17,7 +17,10 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ProductInformation(characteristic: String, grams: String) {
     Row(
-        modifier = Modifier.fillMaxWidth().height(50.dp).padding(horizontal = 16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp)
+            .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

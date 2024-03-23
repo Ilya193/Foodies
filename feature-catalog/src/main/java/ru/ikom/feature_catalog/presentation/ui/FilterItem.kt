@@ -23,7 +23,9 @@ import ru.ikom.common.Orange
 @Composable
 fun FilterItem(text: String, initial: Boolean, line: Boolean = true, choose: (Boolean) -> Unit) {
     var checkedState by remember { mutableStateOf(initial) }
-    Box(modifier = Modifier.fillMaxWidth().height(48.dp)) {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .height(48.dp)) {
         Text(
             modifier = Modifier.align(Alignment.CenterStart),
             text = text,
@@ -45,7 +47,10 @@ fun FilterItem(text: String, initial: Boolean, line: Boolean = true, choose: (Bo
 
         if (line)
             Box(
-                modifier = Modifier.fillMaxWidth().height(1.dp).align(Alignment.BottomCenter)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .align(Alignment.BottomCenter)
                     .background(Color.Gray)
             )
     }

@@ -20,10 +20,13 @@ import ru.ikom.feature_catalog.presentation.CategoryUi
 fun CategoryItem(item: CategoryUi, onClick: () -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     Card(
-        modifier = Modifier.wrapContentSize().padding(8.dp).clickable(
-            interactionSource = interactionSource,
-            indication = null
-        ) { onClick() },
+        modifier = Modifier
+            .wrapContentSize()
+            .padding(8.dp)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null
+            ) { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = if (item.selected) Orange else Color.Transparent
         )

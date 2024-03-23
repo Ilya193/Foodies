@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.ikom.common.BaseViewModel
@@ -30,7 +31,6 @@ class CatalogViewModel(
 
     fun fetchData() = viewModelScope.launch(dispatcher) {
         _uiState.value = CatalogUiState(isLoading = true)
-
         categories = when (val res = categoriesUseCase()) {
             is LoadResult.Success -> res.data.mapIndexed { index, item ->
                 if (index == 0) item.toCategoryUi(selected = true)
@@ -173,7 +173,8 @@ class CatalogViewModel(
             _uiState.value = CatalogUiState(
                 categories = categories.toList(),
                 products = showProducts.toList(),
-                nothingFound = if (showProducts.isEmpty()) NothingFound.Filter else NothingFound.Initial
+                nothingFound = if (showProducts.isEmpty()) NothingFound.Filter else NothingFound.Initial,
+                filterMode = filterMode.toList()
             )
         }
     }

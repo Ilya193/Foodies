@@ -17,8 +17,7 @@ class DetailsViewModel(
 
     fun init(data: String) = viewModelScope.launch(dispatcher) {
         try {
-            _uiState.value =
-                DetailsUiState(product = gson.fromJson(data, CacheProductUi::class.java))
+            _uiState.value = DetailsUiState(product = gson.fromJson(data, CacheProductUi::class.java))
         } catch (_: Exception) {
             _uiState.value = DetailsUiState(isError = true)
         }
@@ -31,9 +30,3 @@ class DetailsViewModel(
 
     fun pop() = viewModelScope.launch(dispatcher) { router.comeback() }
 }
-
-data class DetailsUiState(
-    val product: CacheProductUi? = null,
-    val isLoading: Boolean = false,
-    val isError: Boolean = false,
-)

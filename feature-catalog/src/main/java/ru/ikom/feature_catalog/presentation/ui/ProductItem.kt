@@ -59,7 +59,10 @@ fun ProductItem(
                             painter = painterResource(R.drawable.discount),
                             contentDescription = null
                         )
-                    Image(painter = painterResource(ru.ikom.common.R.drawable.photo), contentDescription = null)
+                    Image(
+                        painter = painterResource(ru.ikom.common.R.drawable.photo),
+                        contentDescription = null
+                    )
                 }
                 Text(
                     modifier = Modifier.padding(horizontal = 10.dp),

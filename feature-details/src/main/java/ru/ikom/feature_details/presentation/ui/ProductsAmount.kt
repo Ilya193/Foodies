@@ -25,10 +25,13 @@ import ru.ikom.feature_details.R
 fun ProductsAmount(sum: Int, add: () -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     Card(
-        modifier = Modifier.fillMaxSize().padding(8.dp).clickable(
-            interactionSource = interactionSource,
-            indication = null
-        ) { add() },
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(8.dp)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null
+            ) { add() },
         colors = CardDefaults.cardColors(
             containerColor = Orange
         )

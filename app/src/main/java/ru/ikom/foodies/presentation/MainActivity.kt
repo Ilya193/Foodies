@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -14,27 +12,17 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
 import org.koin.androidx.compose.koinViewModel
 import ru.ikom.feature_basket.presentation.BasketScreen
 import ru.ikom.feature_catalog.presentation.CatalogScreen
 import ru.ikom.feature_details.presentation.DetailsScreen
-import ru.ikom.foodies.R
 import ru.ikom.foodies.core.Screens
 import ru.ikom.foodies.ui.theme.FoodiesTheme
-import ru.ikom.foodies.ui.theme.Orange
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,11 +65,11 @@ fun Content(viewModel: MainViewModel = koinViewModel()) {
         startDestination = Screens.Splash
     ) {
         composable(Screens.Splash) {
-            SplashScreen(navController = navController)
+            SplashScreen()
         }
 
         composable(Screens.Catalog) {
-            CatalogScreen(navController = navController)
+            CatalogScreen()
         }
 
         composable(Screens.Details) {
@@ -92,29 +80,5 @@ fun Content(viewModel: MainViewModel = koinViewModel()) {
         composable(Screens.Basket) {
             BasketScreen()
         }
-    }
-}
-
-@Composable
-fun SplashScreen(navController: NavController, viewModel: SplashViewModel = koinViewModel()) {
-    var isPlaying by remember { mutableStateOf(true) }
-
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.splash_screen_animation))
-    val progress by animateLottieCompositionAsState(composition, isPlaying = isPlaying)
-
-    LaunchedEffect(progress) {
-        if (progress == 0f) isPlaying = true
-        if (progress == 1f) isPlaying = false
-    }
-
-    if (!isPlaying) viewModel.openCatalog()
-
-    Box(
-        modifier = Modifier.background(Orange)
-    ) {
-        LottieAnimation(
-            composition = composition,
-            progress = { progress },
-        )
     }
 }

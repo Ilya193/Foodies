@@ -23,7 +23,10 @@ import ru.ikom.feature_basket.R
 @Composable
 fun ProductsAmount(sum: Int) {
     Card(
-        modifier = Modifier.fillMaxWidth().height(72.dp).padding(8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(72.dp)
+            .padding(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = Orange
         )
