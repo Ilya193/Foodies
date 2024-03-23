@@ -51,18 +51,20 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:2024.03.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
+    implementation(ru.ikom.buildsrc.Libs.coreKtx)
+    implementation(ru.ikom.buildsrc.Libs.lifecycleRuntimeKtx)
+    implementation(ru.ikom.buildsrc.Libs.activityCompose)
+    implementation(platform(ru.ikom.buildsrc.Libs.composeBom))
+    implementation(ru.ikom.buildsrc.Libs.composeUi)
+    implementation(ru.ikom.buildsrc.Libs.composeGraphics)
+    implementation(ru.ikom.buildsrc.Libs.composeToolingPreview)
+    implementation(ru.ikom.buildsrc.Libs.composeMaterial3)
+
     implementation(project(":feature-catalog"))
     implementation(project(":feature-details"))
     implementation(project(":common"))
     implementation(project(":feature-basket"))
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -71,8 +73,8 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-    implementation("io.insert-koin:koin-androidx-compose:3.4.1")
+    implementation(ru.ikom.buildsrc.Libs.navigationCompose)
+    implementation(ru.ikom.buildsrc.Libs.koin)
 
-    implementation("com.airbnb.android:lottie-compose:6.4.0")
+    implementation(ru.ikom.buildsrc.Libs.lottie)
 }
