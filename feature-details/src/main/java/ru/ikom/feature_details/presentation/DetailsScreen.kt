@@ -19,7 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -59,6 +61,7 @@ fun DetailsScreen(data: String, viewModel: DetailsViewModel = koinViewModel()) {
         ) {
             uiState.product?.let { product ->
                 Column(modifier = Modifier.padding(16.dp)) {
+                    var isEnabled by remember { mutableStateOf(true) }
                     Box {
                         Card(
                             modifier = Modifier
@@ -66,7 +69,12 @@ fun DetailsScreen(data: String, viewModel: DetailsViewModel = koinViewModel()) {
                                 .clickable(
                                     interactionSource = interactionSource,
                                     indication = null
-                                ) { viewModel.pop() },
+                                ) {
+                                    if (isEnabled) {
+                                        viewModel.pop()
+                                        isEnabled = false
+                                    }
+                                },
                             colors = CardDefaults.cardColors(
                                 containerColor = Color.White
                             ),
@@ -92,7 +100,10 @@ fun DetailsScreen(data: String, viewModel: DetailsViewModel = koinViewModel()) {
                         text = product.name,
                         style = TextStyle(color = Color.Black, fontSize = 35.sp)
                     )
-                    Text(text = product.description, style = TextStyle(fontSize = 16.sp, color = Color.Gray))
+                    Text(
+                        text = product.description,
+                        style = TextStyle(fontSize = 16.sp, color = Color.Gray)
+                    )
                 }
                 Line()
                 ProductInformation(

@@ -1,6 +1,7 @@
 package ru.ikom.foodies.core
 
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -69,9 +70,11 @@ interface Screen {
     abstract class ReplaceWithClear(
         private val route: String,
     ) : Screen {
-        override fun show(navController: NavController) = navController.navigate(route) {
-            popUpTo(navController.graph.startDestinationId) {
-                inclusive = true
+        override fun show(navController: NavController) {
+            navController.navigate(route) {
+                popUpTo(navController.graph.startDestinationId) {
+                    inclusive = true
+                }
             }
         }
     }

@@ -19,7 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -57,12 +59,16 @@ fun BasketScreen(viewModel: BasketViewModel = koinViewModel()) {
         Scaffold(
             topBar = {
                 TopAppBar(modifier = Modifier.padding(8.dp), navigationIcon = {
+                    var isEnabled by remember { mutableStateOf(true) }
                     Image(
                         modifier = Modifier.clickable(
                             interactionSource = interactionSource,
                             indication = null
                         ) {
-                            viewModel.comeback()
+                            if (isEnabled) {
+                                viewModel.comeback()
+                                isEnabled = false
+                            }
                         }, painter = painterResource(R.drawable.back), contentDescription = null
                     )
                 }, title = {
@@ -74,7 +80,6 @@ fun BasketScreen(viewModel: BasketViewModel = koinViewModel()) {
                 })
             }
         ) { padding ->
-
             Box(
                 modifier = Modifier
                     .fillMaxSize()
