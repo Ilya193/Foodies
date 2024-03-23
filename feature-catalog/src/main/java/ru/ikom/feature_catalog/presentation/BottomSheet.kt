@@ -37,7 +37,7 @@ fun BottomSheet(initial: List<Int>, onReady: (List<Int>) -> Unit) {
     }
     Column(modifier = Modifier
         .wrapContentHeight()
-        .padding(8.dp)) {
+        .padding(16.dp)) {
         Text(
             stringResource(R.string.pick_up_dishes),
             style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 24.sp)
@@ -65,7 +65,7 @@ fun BottomSheet(initial: List<Int>, onReady: (List<Int>) -> Unit) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(72.dp)
+                .height(48.dp)
                 .clickable(
                     interactionSource = interactionSource,
                     indication = null

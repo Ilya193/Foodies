@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -62,7 +64,11 @@ fun Content(viewModel: MainViewModel = koinViewModel()) {
 
     NavHost(
         navController = navController,
-        startDestination = Screens.Splash
+        startDestination = Screens.Splash,enterTransition = {
+            EnterTransition.None
+        }, exitTransition = {
+            ExitTransition.None
+        }
     ) {
         composable(Screens.Splash) {
             SplashScreen()

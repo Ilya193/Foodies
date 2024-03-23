@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -40,49 +41,46 @@ fun ProductItem(
 ) {
     Card(
         modifier = Modifier
-            .height(290.dp)
+            .wrapContentSize()
             .padding(8.dp)
             .clickable { openDetails(item) }
     ) {
-        Box(
+        Column(
             modifier = Modifier
-                .fillMaxSize()
+                .wrapContentSize()
                 .background(Gray)
         ) {
-            Column {
-                Box {
-                    if (item.priceOld != null)
-                        Image(
-                            modifier = Modifier
-                                .align(Alignment.TopStart)
-                                .padding(4.dp),
-                            painter = painterResource(R.drawable.discount),
-                            contentDescription = null
-                        )
+            Box {
+                if (item.priceOld != null)
                     Image(
-                        painter = painterResource(ru.ikom.common.R.drawable.photo),
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .padding(4.dp),
+                        painter = painterResource(R.drawable.discount),
                         contentDescription = null
                     )
-                }
-                Text(
-                    modifier = Modifier.padding(horizontal = 10.dp),
-                    text = item.name,
-                    style = TextStyle(fontSize = 14.sp)
-                )
-                Text(
-                    modifier = Modifier.padding(horizontal = 10.dp),
-                    text = item.measure.toString() + " " + item.measureUnit,
-                    style = TextStyle(fontSize = 14.sp, color = Color.Gray)
+                Image(
+                    painter = painterResource(ru.ikom.common.R.drawable.photo),
+                    contentDescription = null
                 )
             }
+            Text(
+                modifier = Modifier.padding(horizontal = 10.dp),
+                text = item.name,
+                style = TextStyle(fontSize = 14.sp)
+            )
+            Text(
+                modifier = Modifier.padding(horizontal = 10.dp),
+                text = item.measure.toString() + " " + item.measureUnit,
+                style = TextStyle(fontSize = 14.sp, color = Color.Gray)
+            )
 
             if (item.buy) {
                 Row(
                     modifier = Modifier
                         .padding(vertical = 10.dp)
                         .fillMaxWidth()
-                        .height(40.dp)
-                        .align(Alignment.BottomCenter),
+                        .height(40.dp),
                     horizontalArrangement = Arrangement.SpaceAround,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -100,7 +98,6 @@ fun ProductItem(
                         .padding(horizontal = 10.dp, vertical = 10.dp)
                         .fillMaxWidth()
                         .height(40.dp)
-                        .align(Alignment.BottomCenter)
                         .clickable { onClickBuy() },
                     colors = CardDefaults.cardColors(
                         containerColor = Color.White

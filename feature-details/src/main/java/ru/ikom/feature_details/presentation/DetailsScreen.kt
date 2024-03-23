@@ -92,7 +92,7 @@ fun DetailsScreen(data: String, viewModel: DetailsViewModel = koinViewModel()) {
                         text = product.name,
                         style = TextStyle(color = Color.Black, fontSize = 35.sp)
                     )
-                    Text(text = product.description, style = TextStyle(fontSize = 16.sp))
+                    Text(text = product.description, style = TextStyle(fontSize = 16.sp, color = Color.Gray))
                 }
                 Line()
                 ProductInformation(
