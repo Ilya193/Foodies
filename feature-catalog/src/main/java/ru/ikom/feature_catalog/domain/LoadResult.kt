@@ -4,8 +4,8 @@ sealed class LoadResult<out T> {
 
     data class Success<T>(
         val data: T
-    ): LoadResult<T>()
+    ) : LoadResult<T>()
 
-    data object Error: LoadResult<Nothing>()
+    data object Error : LoadResult<Nothing>()
 
 }

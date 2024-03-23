@@ -56,6 +56,7 @@ data class CatalogUiState(
     val products: List<ProductUi> = emptyList(),
     val sum: Int? = null,
     val searchMode: Boolean = false,
+    val filterMode: List<Int> = emptyList(),
     val nothingFound: NothingFound = NothingFound.Initial,
     val isLoading: Boolean = false,
     val isError: Boolean = false

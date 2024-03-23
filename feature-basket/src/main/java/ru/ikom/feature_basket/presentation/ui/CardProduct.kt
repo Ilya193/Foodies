@@ -31,7 +31,10 @@ import ru.ikom.feature_basket.presentation.ProductUi
 @Composable
 fun CardProduct(item: ProductUi, minus: () -> Unit, plus: () -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth().height(130.dp).padding(vertical = 2.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(130.dp)
+            .padding(vertical = 2.dp),
         shape = RectangleShape,
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
@@ -41,7 +44,9 @@ fun CardProduct(item: ProductUi, minus: () -> Unit, plus: () -> Unit) {
         ) {
 
             Box(
-                modifier = Modifier.weight(1f).fillMaxHeight(),
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
@@ -52,11 +57,16 @@ fun CardProduct(item: ProductUi, minus: () -> Unit, plus: () -> Unit) {
             }
 
             Box(
-                modifier = Modifier.weight(2f).fillMaxHeight().padding(vertical = 12.dp),
+                modifier = Modifier
+                    .weight(2f)
+                    .fillMaxHeight()
+                    .padding(vertical = 12.dp),
             ) {
                 Text(modifier = Modifier.align(Alignment.TopStart), text = item.name)
                 Row(
-                    modifier = Modifier.fillMaxWidth(0.6f).align(Alignment.BottomStart),
+                    modifier = Modifier
+                        .fillMaxWidth(0.6f)
+                        .align(Alignment.BottomStart),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
@@ -70,14 +80,17 @@ fun CardProduct(item: ProductUi, minus: () -> Unit, plus: () -> Unit) {
                 modifier = Modifier.fillMaxHeight()
             ) {
                 Text(
-                    modifier = Modifier.align(Alignment.BottomEnd)
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
                         .padding(vertical = 24.dp, horizontal = 6.dp),
                     text = item.priceCurrent.toString() + " " + stringResource(R.string.currency),
                     style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 )
                 item.priceOld?.let {
                     Text(
-                        modifier = Modifier.align(Alignment.BottomEnd).padding(6.dp),
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(6.dp),
                         text = it.toString() + " " + stringResource(R.string.currency),
                         textDecoration = TextDecoration.LineThrough,
                         style = TextStyle(fontSize = 14.sp, color = Color.Gray)

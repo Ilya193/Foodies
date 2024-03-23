@@ -30,10 +30,14 @@ import ru.ikom.feature_catalog.presentation.ui.FilterItem
 @Composable
 fun BottomSheet(initial: List<Int>, onReady: (List<Int>) -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
-    val selected = remember { mutableStateListOf<Int>().apply {
-        addAll(initial)
-    } }
-    Column(modifier = Modifier.wrapContentHeight().padding(8.dp)) {
+    val selected = remember {
+        mutableStateListOf<Int>().apply {
+            addAll(initial)
+        }
+    }
+    Column(modifier = Modifier
+        .wrapContentHeight()
+        .padding(8.dp)) {
         Text(
             stringResource(R.string.pick_up_dishes),
             style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 24.sp)
@@ -59,13 +63,16 @@ fun BottomSheet(initial: List<Int>, onReady: (List<Int>) -> Unit) {
         }
 
         Card(
-            modifier = Modifier.fillMaxWidth().height(72.dp).clickable(
-                interactionSource = interactionSource,
-                indication = null
-            ) {
-                onReady(selected.toList())
-                selected.clear()
-            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(72.dp)
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null
+                ) {
+                    onReady(selected.toList())
+                    selected.clear()
+                },
             colors = CardDefaults.cardColors(
                 containerColor = Orange
             ),

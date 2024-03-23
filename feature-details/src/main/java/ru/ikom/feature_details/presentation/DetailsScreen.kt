@@ -29,6 +29,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.koinViewModel
+import ru.ikom.common.ErrorMessage
+import ru.ikom.common.LoadData
 import ru.ikom.feature_details.R
 import ru.ikom.feature_details.presentation.ui.Line
 import ru.ikom.feature_details.presentation.ui.ProductInformation
@@ -44,74 +46,90 @@ fun DetailsScreen(data: String, viewModel: DetailsViewModel = koinViewModel()) {
         viewModel.init(data)
     }
 
-    Column(modifier = Modifier.fillMaxSize().padding(top = 16.dp).verticalScroll(ScrollState(0))) {
-        uiState.product?.let { product ->
-            Column(modifier = Modifier.padding(16.dp)) {
-                Box {
-                    Card(
-                        modifier = Modifier.align(Alignment.TopStart).clickable(
-                            interactionSource = interactionSource,
-                            indication = null
-                        ) { viewModel.pop() },
-                        colors = CardDefaults.cardColors(
-                            containerColor = Color.White
-                        ),
-                        shape = CircleShape,
-                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-                    ) {
+    if (uiState.isLoading)
+        LoadData()
+    else if (uiState.isError)
+        ErrorMessage { viewModel.init(data) }
+    else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 16.dp)
+                .verticalScroll(ScrollState(0))
+        ) {
+            uiState.product?.let { product ->
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Box {
+                        Card(
+                            modifier = Modifier
+                                .align(Alignment.TopStart)
+                                .clickable(
+                                    interactionSource = interactionSource,
+                                    indication = null
+                                ) { viewModel.pop() },
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color.White
+                            ),
+                            shape = CircleShape,
+                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                        ) {
+                            Image(
+                                modifier = Modifier.padding(12.dp),
+                                painter = painterResource(id = R.drawable.arrowleft),
+                                contentDescription = null
+                            )
+                        }
                         Image(
-                            modifier = Modifier.padding(12.dp),
-                            painter = painterResource(id = R.drawable.arrowleft),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(375.dp),
+                            painter = painterResource(id = ru.ikom.common.R.drawable.photo),
                             contentDescription = null
                         )
                     }
-                    Image(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(375.dp),
-                        painter = painterResource(id = ru.ikom.common.R.drawable.photo),
-                        contentDescription = null
+
+                    Text(
+                        text = product.name,
+                        style = TextStyle(color = Color.Black, fontSize = 35.sp)
                     )
+                    Text(text = product.description, style = TextStyle(fontSize = 16.sp))
                 }
+                Line()
+                ProductInformation(
+                    stringResource(R.string.weight),
+                    product.measure.toString() + " " + product.measureUnit
+                )
+                Line()
+                ProductInformation(
+                    stringResource(R.string.energy_value),
+                    product.energyPer100Grams.toString() + " " + stringResource(R.string.kilocalories)
+                )
+                Line()
+                ProductInformation(
+                    stringResource(R.string.squirrels),
+                    product.proteinsPer100Grams.toString() + " " + product.measureUnit
+                )
+                Line()
+                ProductInformation(
+                    stringResource(R.string.fats),
+                    product.fatsPer100Grams.toString() + " " + product.measureUnit
+                )
+                Line()
+                ProductInformation(
+                    stringResource(R.string.carbohydrates),
+                    product.carbohydratesPer100Grams.toString() + " " + product.measureUnit
+                )
+                Line()
 
-                Text(text = product.name, style = TextStyle(color = Color.Black, fontSize = 35.sp))
-                Text(text = product.description, style = TextStyle(fontSize = 16.sp))
-            }
-            Line()
-            ProductInformation(
-                stringResource(R.string.weight),
-                product.measure.toString() + " " + product.measureUnit
-            )
-            Line()
-            ProductInformation(
-                stringResource(R.string.energy_value),
-                product.energyPer100Grams.toString() + " " + stringResource(R.string.kilocalories)
-            )
-            Line()
-            ProductInformation(
-                stringResource(R.string.squirrels),
-                product.proteinsPer100Grams.toString() + " " + product.measureUnit
-            )
-            Line()
-            ProductInformation(
-                stringResource(R.string.fats),
-                product.fatsPer100Grams.toString() + " " + product.measureUnit
-            )
-            Line()
-            ProductInformation(
-                stringResource(R.string.carbohydrates),
-                product.carbohydratesPer100Grams.toString() + " " + product.measureUnit
-            )
-            Line()
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp)
-                    .height(72.dp)
-            ) {
-                ProductsAmount(product.priceCurrent) {
-                    viewModel.add(product)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
+                        .height(72.dp)
+                ) {
+                    ProductsAmount(product.priceCurrent) {
+                        viewModel.add(product)
+                    }
                 }
             }
         }
