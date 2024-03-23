@@ -12,12 +12,13 @@ class DetailsViewModel(
     private val router: DetailsRouter,
     private val gson: Gson,
     private val storage: Storage,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : BaseViewModel<DetailsUiState>(router, DetailsUiState(isLoading = true)) {
 
     fun init(data: String) = viewModelScope.launch(dispatcher) {
         try {
-            _uiState.value = DetailsUiState(product = gson.fromJson(data, CacheProductUi::class.java))
+            _uiState.value =
+                DetailsUiState(product = gson.fromJson(data, CacheProductUi::class.java))
         } catch (_: Exception) {
             _uiState.value = DetailsUiState(isError = true)
         }
@@ -34,5 +35,5 @@ class DetailsViewModel(
 data class DetailsUiState(
     val product: CacheProductUi? = null,
     val isLoading: Boolean = false,
-    val isError: Boolean = false
+    val isError: Boolean = false,
 )

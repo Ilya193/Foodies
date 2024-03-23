@@ -5,7 +5,7 @@ import ru.ikom.foodies.core.Navigation
 import ru.ikom.foodies.core.Screen
 
 class MainViewModel(
-    private val navigation: Navigation<Screen>
+    private val navigation: Navigation<Screen>,
 ) : ViewModel() {
 
     fun read() = navigation.read()

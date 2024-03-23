@@ -21,7 +21,6 @@ interface Navigation<T> {
 
         override fun update(value: Screen) {
             screen.value = value
-            println("s149 value ${screen.value}")
         }
 
         override fun coup() {

@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 abstract class BaseViewModel<S>(
     private val router: Router,
     initialState: S,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
 
     protected val _uiState = MutableStateFlow(initialState)

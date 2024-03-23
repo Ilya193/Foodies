@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -59,8 +58,6 @@ fun Content(viewModel: MainViewModel = koinViewModel()) {
     val navController = rememberNavController()
     val screen by viewModel.read().collectAsState()
 
-    println("s149 screen $screen")
-
     DisposableEffect(Unit) {
         onDispose {
             viewModel.coup()
@@ -100,7 +97,7 @@ fun Content(viewModel: MainViewModel = koinViewModel()) {
 
 @Composable
 fun SplashScreen(navController: NavController, viewModel: SplashViewModel = koinViewModel()) {
-    var isPlaying by remember { mutableStateOf(false) }
+    var isPlaying by remember { mutableStateOf(true) }
 
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.splash_screen_animation))
     val progress by animateLottieCompositionAsState(composition, isPlaying = isPlaying)

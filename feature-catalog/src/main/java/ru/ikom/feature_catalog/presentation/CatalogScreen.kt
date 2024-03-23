@@ -144,10 +144,13 @@ fun CatalogScreen(navController: NavController, viewModel: CatalogViewModel = ko
                             trailingIcon = {
                                 if (showCancel)
                                     Icon(
-                                        modifier = Modifier.clickable {
-                                            searchMode = false
-                                            viewModel.changeMode(false)
+                                        modifier = Modifier.clickable(
+                                            interactionSource = interactionSource,
+                                            indication = null
+                                        ) {
                                             dish = ""
+                                            viewModel.inputDish(dish)
+                                            showCancel = false
                                         },
                                         painter = painterResource(R.drawable.cancel),
                                         contentDescription = null
