@@ -1,4 +1,4 @@
-package ru.ikom.feature_catalog.presentation
+package ru.ikom.feature_catalog.presentation.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

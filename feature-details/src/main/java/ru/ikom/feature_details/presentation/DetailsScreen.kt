@@ -1,14 +1,11 @@
-package ru.ikom.feature_details
+package ru.ikom.feature_details.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,7 +29,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.koinViewModel
-import ru.ikom.common.Orange
+import ru.ikom.feature_details.R
+import ru.ikom.feature_details.presentation.ui.Line
+import ru.ikom.feature_details.presentation.ui.ProductInformation
+import ru.ikom.feature_details.presentation.ui.ProductsAmount
 
 @Composable
 fun DetailsScreen(data: String, viewModel: DetailsViewModel = koinViewModel()) {
@@ -85,7 +85,7 @@ fun DetailsScreen(data: String, viewModel: DetailsViewModel = koinViewModel()) {
             Line()
             ProductInformation(
                 stringResource(R.string.energy_value),
-                product.energyPer100Grams.toString() + " ккал"
+                product.energyPer100Grams.toString() + " " + stringResource(R.string.kilocalories)
             )
             Line()
             ProductInformation(
@@ -114,51 +114,6 @@ fun DetailsScreen(data: String, viewModel: DetailsViewModel = koinViewModel()) {
                     viewModel.add(product)
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun Line() {
-    Box(
-        modifier = Modifier.fillMaxWidth().height(1.dp)
-            .background(Color.Gray)
-    )
-}
-
-@Composable
-fun ProductInformation(characteristic: String, grams: String) {
-    Row(
-        modifier = Modifier.fillMaxWidth().height(50.dp).padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(text = characteristic, style = TextStyle(color = Color.Gray, fontSize = 16.sp))
-        Text(text = grams, style = TextStyle(color = Color.Black, fontSize = 16.sp))
-    }
-}
-
-@Composable
-fun ProductsAmount(sum: Int, add: () -> Unit) {
-    val interactionSource = remember { MutableInteractionSource() }
-    Card(
-        modifier = Modifier.fillMaxSize().padding(8.dp).clickable(
-            interactionSource = interactionSource,
-            indication = null
-        ) { add() },
-        colors = CardDefaults.cardColors(
-            containerColor = Orange
-        )
-    ) {
-        Row(
-            modifier = Modifier.fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = stringResource(R.string.price_current) + " $sum " + stringResource(R.string.currency),
-                style = TextStyle(color = Color.White, fontSize = 16.sp)
-            )
         }
     }
 }

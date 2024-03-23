@@ -4,8 +4,9 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import ru.ikom.feature_basket.presentation.BasketRouter
 import ru.ikom.feature_catalog.presentation.CatalogRouter
-import ru.ikom.feature_details.DetailsRouter
+import ru.ikom.feature_details.presentation.DetailsRouter
 import ru.ikom.foodies.presentation.SplashRouter
 
 interface Navigation<T> {
@@ -13,13 +14,14 @@ interface Navigation<T> {
     fun update(value: T)
     fun coup()
 
-    class Base : Navigation<Screen>, SplashRouter, CatalogRouter, DetailsRouter {
+    class Base : Navigation<Screen>, SplashRouter, CatalogRouter, DetailsRouter, BasketRouter {
         private val screen = MutableStateFlow<Screen>(Screen.Start)
 
         override fun read(): StateFlow<Screen> = screen.asStateFlow()
 
         override fun update(value: Screen) {
             screen.value = value
+            println("s149 value ${screen.value}")
         }
 
         override fun coup() {
@@ -34,8 +36,12 @@ interface Navigation<T> {
             update(DetailsScreen(data))
         }
 
+        override fun openBasket() {
+            update(BasketScreen())
+        }
+
         override fun comeback() {
-            update(Screen.Pop)
+            update(Screen.Pop())
         }
     }
 }
@@ -74,7 +80,7 @@ interface Screen {
     data object Start : Screen
     data object Coup : Screen
 
-    data object Pop : Screen {
+    class Pop : Screen {
         override fun show(navController: NavController) {
             navController.popBackStack()
         }
@@ -85,3 +91,5 @@ class CatalogScreen : Screen.ReplaceWithClear(Screens.Catalog)
 class DetailsScreen(
     data: String,
 ) : Screen.ReplaceWithArguments(Screens.Details, data)
+
+class BasketScreen : Screen.Replace(Screens.Basket)

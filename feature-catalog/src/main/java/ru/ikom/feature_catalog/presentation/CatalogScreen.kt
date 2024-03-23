@@ -50,6 +50,9 @@ import androidx.navigation.NavController
 import org.koin.androidx.compose.koinViewModel
 import ru.ikom.common.Orange
 import ru.ikom.feature_catalog.R
+import ru.ikom.feature_catalog.presentation.ui.CategoryItem
+import ru.ikom.feature_catalog.presentation.ui.ProductItem
+import ru.ikom.feature_catalog.presentation.ui.ProductsAmount
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

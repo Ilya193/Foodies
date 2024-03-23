@@ -29,8 +29,9 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import org.koin.androidx.compose.koinViewModel
+import ru.ikom.feature_basket.presentation.BasketScreen
 import ru.ikom.feature_catalog.presentation.CatalogScreen
-import ru.ikom.feature_details.DetailsScreen
+import ru.ikom.feature_details.presentation.DetailsScreen
 import ru.ikom.foodies.R
 import ru.ikom.foodies.core.Screens
 import ru.ikom.foodies.ui.theme.FoodiesTheme
@@ -53,11 +54,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Content(viewModel: MainViewModel = koinViewModel()) {
     val navController = rememberNavController()
     val screen by viewModel.read().collectAsState()
+
+    println("s149 screen $screen")
 
     DisposableEffect(Unit) {
         onDispose {
@@ -88,6 +90,10 @@ fun Content(viewModel: MainViewModel = koinViewModel()) {
         composable(Screens.Details) {
             val product = it.arguments?.getString("data") ?: ""
             DetailsScreen(product)
+        }
+
+        composable(Screens.Basket) {
+            BasketScreen()
         }
     }
 }

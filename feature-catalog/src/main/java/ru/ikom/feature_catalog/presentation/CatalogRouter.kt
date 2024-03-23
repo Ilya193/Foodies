@@ -1,5 +1,8 @@
 package ru.ikom.feature_catalog.presentation
 
-interface CatalogRouter {
+import ru.ikom.common.Router
+
+interface CatalogRouter : Router {
     fun openDetails(data: String)
+    fun openBasket()
 }

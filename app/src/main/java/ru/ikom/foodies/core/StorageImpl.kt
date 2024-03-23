@@ -7,7 +7,7 @@ class StorageImpl : Storage {
 
     private val products = mutableListOf<CacheProduct>()
 
-    override fun save(product: CacheProduct) {
+    override suspend fun save(product: CacheProduct) {
         var add = false
         products.forEachIndexed { index, cacheProduct ->
             if (cacheProduct.id == product.id) {
@@ -19,15 +19,16 @@ class StorageImpl : Storage {
             products.add(product)
     }
 
-    override fun save(products: List<CacheProduct>) {
+    override suspend fun save(products: List<CacheProduct>) {
         products.forEach {
             save(it)
         }
     }
 
-    override fun delete(product: CacheProduct) {
-        products.remove(product)
+    override suspend fun update(product: CacheProduct, index: Int) {
+        if (product.count == 0) products.removeAt(index)
+        else products[index] = product
     }
 
-    override fun read(): List<CacheProduct> = products
+    override suspend fun read(): List<CacheProduct> = products
 }

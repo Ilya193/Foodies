@@ -7,4 +7,5 @@
     <string name="carbohydrates">Углеводы</string>
     <string name="price_current">В корзину за</string>
     <string name="currency">₽</string>
+    <string name="kilocalories">ккал</string>
 </resources>

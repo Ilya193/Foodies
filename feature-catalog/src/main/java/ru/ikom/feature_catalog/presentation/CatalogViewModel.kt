@@ -1,6 +1,5 @@
 package ru.ikom.feature_catalog.presentation
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
@@ -10,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.ikom.common.BaseViewModel
 import ru.ikom.common.Storage
 import ru.ikom.feature_catalog.domain.FetchCategoriesUseCase
 import ru.ikom.feature_catalog.domain.FetchProductsUseCase
@@ -25,14 +25,11 @@ class CatalogViewModel(
     private val gson: Gson,
     private val storage: Storage,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-) : ViewModel() {
+) : BaseViewModel<CatalogUiState>(router, CatalogUiState()) {
 
     private var categories = mutableListOf<CategoryUi>()
     private var products = mutableListOf<ProductUi>()
     private var showProducts = mutableListOf<ProductUi>()
-
-    private val _uiState = MutableStateFlow(CatalogUiState())
-    val uiState: StateFlow<CatalogUiState> = _uiState.asStateFlow()
 
     fun fetchData() = viewModelScope.launch(dispatcher) {
         _uiState.value = CatalogUiState(isLoading = true)
@@ -191,5 +188,6 @@ class CatalogViewModel(
     fun add() = viewModelScope.launch(dispatcher) {
         val filteredProducts = showProducts.filter { it.buy }
         storage.save(filteredProducts.map { it.toCacheProduct() })
+        router.openBasket()
     }
 }

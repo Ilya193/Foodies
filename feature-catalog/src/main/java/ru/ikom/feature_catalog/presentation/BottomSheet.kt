@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.ikom.common.Orange
 import ru.ikom.feature_catalog.R
+import ru.ikom.feature_catalog.presentation.ui.FilterItem
 
 @Composable
 fun BottomSheet(initial: List<Int>, onReady: (List<Int>) -> Unit) {

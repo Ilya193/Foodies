@@ -1,14 +1,11 @@
-package ru.ikom.feature_details
+package ru.ikom.feature_details.presentation
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ru.ikom.common.BaseViewModel
 import ru.ikom.common.Storage
 
 class DetailsViewModel(
@@ -16,10 +13,7 @@ class DetailsViewModel(
     private val gson: Gson,
     private val storage: Storage,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
-) : ViewModel() {
-
-    private val _uiState = MutableStateFlow(DetailsUiState(isLoading = true))
-    val uiState: StateFlow<DetailsUiState> get() = _uiState.asStateFlow()
+) : BaseViewModel<DetailsUiState>(router, DetailsUiState(isLoading = true)) {
 
     fun init(data: String) = viewModelScope.launch(dispatcher) {
         try {
@@ -31,6 +25,7 @@ class DetailsViewModel(
 
     fun add(product: CacheProductUi) = viewModelScope.launch(dispatcher) {
         storage.save(product.toCacheProduct())
+        router.openBasket()
     }
 
     fun pop() = viewModelScope.launch(dispatcher) { router.comeback() }

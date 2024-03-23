@@ -1,4 +1,4 @@
-package ru.ikom.feature_catalog.presentation
+package ru.ikom.feature_catalog.presentation.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import ru.ikom.common.Orange
+import ru.ikom.feature_catalog.presentation.CategoryUi
 
 @Composable
 fun CategoryItem(item: CategoryUi, onClick: () -> Unit) {

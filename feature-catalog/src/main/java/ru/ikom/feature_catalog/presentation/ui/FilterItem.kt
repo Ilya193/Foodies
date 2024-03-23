@@ -1,4 +1,4 @@
-package ru.ikom.feature_catalog.presentation
+package ru.ikom.feature_catalog.presentation.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

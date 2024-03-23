@@ -3,8 +3,9 @@ package ru.ikom.foodies.core
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import ru.ikom.common.Storage
+import ru.ikom.feature_basket.presentation.BasketRouter
 import ru.ikom.feature_catalog.presentation.CatalogRouter
-import ru.ikom.feature_details.DetailsRouter
+import ru.ikom.feature_details.presentation.DetailsRouter
 import ru.ikom.foodies.presentation.MainViewModel
 import ru.ikom.foodies.presentation.SplashRouter
 import ru.ikom.foodies.presentation.SplashViewModel
@@ -25,6 +26,10 @@ val appModule = module {
     }
 
     single<DetailsRouter> {
+        navigation
+    }
+
+    single<BasketRouter> {
         navigation
     }
 

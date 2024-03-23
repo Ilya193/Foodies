@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="basket">Корзина</string>
+    <string name="currency">₽</string>
+    <string name="order">Заказать за</string>
+    <string name="empty_dish">Пусто, выберите блюда в каталоге :)</string>
+</resources>

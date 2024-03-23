@@ -1,4 +1,4 @@
-package ru.ikom.feature_catalog.presentation
+package ru.ikom.feature_catalog.presentation.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.koinViewModel
 import ru.ikom.common.Gray
 import ru.ikom.feature_catalog.R
+import ru.ikom.feature_catalog.presentation.CatalogViewModel
+import ru.ikom.feature_catalog.presentation.ProductUi
 
 @Composable
 fun ProductItem(

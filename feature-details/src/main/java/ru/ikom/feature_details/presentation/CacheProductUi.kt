@@ -1,4 +1,4 @@
-package ru.ikom.feature_details
+package ru.ikom.feature_details.presentation
 
 import ru.ikom.common.CacheProduct
 
