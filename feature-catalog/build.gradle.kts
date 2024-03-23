@@ -60,4 +60,6 @@ dependencies {
     implementation(ru.ikom.buildsrc.Libs.koin)
 
     implementation(ru.ikom.buildsrc.Libs.gson)
+
+    implementation(ru.ikom.buildsrc.Libs.constraintLayoutCompose)
 }

@@ -58,4 +58,6 @@ dependencies {
 
     implementation(ru.ikom.buildsrc.Libs.navigationCompose)
     implementation(ru.ikom.buildsrc.Libs.koin)
+
+    implementation(ru.ikom.buildsrc.Libs.constraintLayoutCompose)
 }

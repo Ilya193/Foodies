@@ -10,6 +10,7 @@ object Libs {
     const val composeToolingPreview = "androidx.compose.ui:ui-tooling-preview"
     const val composeMaterial3 = "androidx.compose.material3:material3"
     const val navigationCompose = "androidx.navigation:navigation-compose:${Versions.navigationCompose}"
+    const val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:1.0.1"
     const val koin = "io.insert-koin:koin-androidx-compose:${Versions.koin}"
     const val lottie = "com.airbnb.android:lottie-compose:${Versions.lottie}"
     const val gson = "com.google.code.gson:gson:${Versions.gson}"

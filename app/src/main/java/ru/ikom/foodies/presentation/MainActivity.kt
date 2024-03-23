@@ -64,11 +64,7 @@ fun Content(viewModel: MainViewModel = koinViewModel()) {
 
     NavHost(
         navController = navController,
-        startDestination = Screens.Splash,enterTransition = {
-            EnterTransition.None
-        }, exitTransition = {
-            ExitTransition.None
-        }
+        startDestination = Screens.Splash
     ) {
         composable(Screens.Splash) {
             SplashScreen()

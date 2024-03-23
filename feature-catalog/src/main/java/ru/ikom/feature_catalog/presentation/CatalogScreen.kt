@@ -45,6 +45,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import org.koin.androidx.compose.koinViewModel
 import ru.ikom.common.ErrorMessage
 import ru.ikom.common.LoadData
@@ -243,35 +245,45 @@ fun CatalogScreen(viewModel: CatalogViewModel = koinViewModel()) {
                     }
 
                     if ((uiState.products.isNotEmpty() && uiState.searchMode || !uiState.searchMode)) {
-                        LazyVerticalGrid(columns = GridCells.Adaptive(170.dp)) {
-                            itemsIndexed(
-                                items = uiState.products,
-                                key = { index, item -> item.id }) { index, item ->
-                                ProductItem(
-                                    item,
-                                    index,
-                                    openDetails = viewModel::openDetails,
-                                    onClickBuy = {
-                                        viewModel.onClickBuy(item, index)
-                                    })
+                        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+                            val (orderButton, products) = createRefs()
+                            LazyVerticalGrid(modifier = Modifier.constrainAs(products) {
+                                top.linkTo(parent.top)
+                                bottom.linkTo(orderButton.top)
+                                height = Dimension.fillToConstraints
+                            }, columns = GridCells.Adaptive(170.dp)) {
+                                itemsIndexed(
+                                    items = uiState.products,
+                                    key = { index, item -> item.id }) { index, item ->
+                                    ProductItem(
+                                        item,
+                                        index,
+                                        openDetails = viewModel::openDetails,
+                                        onClickBuy = {
+                                            viewModel.onClickBuy(item, index)
+                                        })
+                                }
+                            }
+
+                            uiState.sum?.let {
+                                Box(
+                                    modifier = Modifier.constrainAs(orderButton) {
+                                        bottom.linkTo(parent.bottom)
+                                    }
+                                        .fillMaxWidth()
+                                        .height(72.dp)
+                                        .background(Color.White)
+                                ) {
+                                    ProductsAmount(it) {
+                                        viewModel.add()
+                                    }
+                                }
                             }
                         }
                     }
                 }
 
-                uiState.sum?.let {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(72.dp)
-                            .align(Alignment.BottomCenter)
-                            .background(Color.White)
-                    ) {
-                        ProductsAmount(it) {
-                            viewModel.add()
-                        }
-                    }
-                }
+
             }
 
             if (showBottomSheet) {
