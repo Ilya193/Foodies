@@ -1,12 +1,12 @@
 package ru.ikom.feature_catalog.presentation
 
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import ru.ikom.common.BaseViewModel
 import ru.ikom.common.Storage
 import ru.ikom.feature_catalog.domain.FetchCategoriesUseCase
@@ -20,7 +20,6 @@ class CatalogViewModel(
     private val router: CatalogRouter,
     private val categoriesUseCase: FetchCategoriesUseCase,
     private val productsUseCase: FetchProductsUseCase,
-    private val gson: Gson,
     private val storage: Storage,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : BaseViewModel<CatalogUiState>(router, CatalogUiState()) {
@@ -180,7 +179,7 @@ class CatalogViewModel(
     }
 
     fun openDetails(item: ProductUi) = viewModelScope.launch(dispatcher) {
-        router.openDetails(gson.toJson(item.toCacheProduct()))
+        router.openDetails(Json.encodeToString(item.toCacheProduct()))
     }
 
     fun add() = viewModelScope.launch(dispatcher) {

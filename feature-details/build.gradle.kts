@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -60,4 +61,6 @@ dependencies {
     implementation(ru.ikom.buildsrc.Libs.koin)
 
     implementation(ru.ikom.buildsrc.Libs.gson)
+
+    implementation(ru.ikom.buildsrc.Libs.kotlinxSerialization)
 }

@@ -1,31 +1,33 @@
 package ru.ikom.feature_catalog.data
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import ru.ikom.feature_catalog.domain.ProductDomain
 
+@Serializable
 data class ProductData(
-    @SerializedName("carbohydrates_per_100_grams")
+    @SerialName("carbohydrates_per_100_grams")
     val carbohydratesPer100Grams: Double,
-    @SerializedName("category_id")
+    @SerialName("category_id")
     val categoryId: Int,
     val description: String,
-    @SerializedName("energy_per_100_grams")
+    @SerialName("energy_per_100_grams")
     val energyPer100Grams: Double,
-    @SerializedName("fats_per_100_grams")
+    @SerialName("fats_per_100_grams")
     val fatsPer100Grams: Double,
     val id: Int,
     val image: String,
     val measure: Int,
-    @SerializedName("measure_unit")
+    @SerialName("measure_unit")
     val measureUnit: String,
     val name: String,
-    @SerializedName("price_current")
+    @SerialName("price_current")
     val priceCurrent: Int,
-    @SerializedName("price_old")
+    @SerialName("price_old")
     val priceOld: Int?,
-    @SerializedName("proteins_per_100_grams")
+    @SerialName("proteins_per_100_grams")
     val proteinsPer100Grams: Double,
-    @SerializedName("tag_ids")
+    @SerialName("tag_ids")
     val tagIds: List<Int>,
 ) {
     fun toProductDomain(): ProductDomain =

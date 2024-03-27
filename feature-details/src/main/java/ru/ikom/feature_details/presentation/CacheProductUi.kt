@@ -1,7 +1,9 @@
 package ru.ikom.feature_details.presentation
 
+import kotlinx.serialization.Serializable
 import ru.ikom.common.CacheProduct
 
+@Serializable
 data class CacheProductUi(
     val carbohydratesPer100Grams: Double,
     val description: String,

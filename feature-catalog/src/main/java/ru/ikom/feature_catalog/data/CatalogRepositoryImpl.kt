@@ -1,22 +1,21 @@
 package ru.ikom.feature_catalog.data
 
 import android.content.res.AssetManager
-import com.google.gson.Gson
+import kotlinx.serialization.json.Json
 import ru.ikom.feature_catalog.domain.CatalogRepository
 import ru.ikom.feature_catalog.domain.CategoryDomain
 import ru.ikom.feature_catalog.domain.LoadResult
 import ru.ikom.feature_catalog.domain.ProductDomain
-import java.io.InputStreamReader
+import java.io.BufferedReader
 
 class CatalogRepositoryImpl(
     private val assetManager: AssetManager,
-    private val gson: Gson
 ) : CatalogRepository {
     override suspend fun fetchCategories(): LoadResult<List<CategoryDomain>> {
         return try {
             val stream = assetManager.open("categories.json")
-            val reader = InputStreamReader(stream)
-            LoadResult.Success(gson.fromJson(reader, CategoriesData::class.java).toCategoriesDomain())
+            val str = stream.bufferedReader().use(BufferedReader::readText)
+            LoadResult.Success(Json.decodeFromString<List<CategoryData>>(str).map { it.toCategoryDomain() })
         } catch (e: Exception) {
             LoadResult.Error
         }
@@ -25,8 +24,8 @@ class CatalogRepositoryImpl(
     override suspend fun fetchProducts(): LoadResult<List<ProductDomain>> {
         return try {
             val stream = assetManager.open("products.json")
-            val reader = InputStreamReader(stream)
-            LoadResult.Success(gson.fromJson(reader, ProductsData::class.java).toProductsDomain())
+            val str = stream.bufferedReader().use(BufferedReader::readText)
+            LoadResult.Success(Json.decodeFromString<List<ProductData>>(str).map { it.toProductDomain() })
         } catch (e: Exception) {
             LoadResult.Error
         }

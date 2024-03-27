@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -59,7 +60,7 @@ dependencies {
     implementation(ru.ikom.buildsrc.Libs.navigationCompose)
     implementation(ru.ikom.buildsrc.Libs.koin)
 
-    implementation(ru.ikom.buildsrc.Libs.gson)
-
     implementation(ru.ikom.buildsrc.Libs.constraintLayoutCompose)
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 }

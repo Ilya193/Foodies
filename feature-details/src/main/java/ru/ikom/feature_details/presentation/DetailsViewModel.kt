@@ -5,19 +5,19 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import ru.ikom.common.BaseViewModel
 import ru.ikom.common.Storage
 
 class DetailsViewModel(
     private val router: DetailsRouter,
-    private val gson: Gson,
     private val storage: Storage,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : BaseViewModel<DetailsUiState>(router, DetailsUiState(isLoading = true)) {
 
     fun init(data: String) = viewModelScope.launch(dispatcher) {
         try {
-            _uiState.value = DetailsUiState(product = gson.fromJson(data, CacheProductUi::class.java))
+            _uiState.value = DetailsUiState(product = Json.decodeFromString<CacheProductUi>(data))
         } catch (_: Exception) {
             _uiState.value = DetailsUiState(isError = true)
         }

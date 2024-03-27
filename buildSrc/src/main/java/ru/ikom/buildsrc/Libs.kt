@@ -14,6 +14,7 @@ object Libs {
     const val koin = "io.insert-koin:koin-androidx-compose:${Versions.koin}"
     const val lottie = "com.airbnb.android:lottie-compose:${Versions.lottie}"
     const val gson = "com.google.code.gson:gson:${Versions.gson}"
+    const val kotlinxSerialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerialization}"
 }
 
 object Versions {
@@ -25,4 +26,5 @@ object Versions {
     const val koin = "3.4.1"
     const val lottie = "6.4.0"
     const val gson = "2.10.1"
+    const val kotlinxSerialization = "1.6.3"
 }

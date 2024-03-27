@@ -1,5 +1,8 @@
 package ru.ikom.common
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class CacheProduct(
     val carbohydratesPer100Grams: Double,
     val description: String,
