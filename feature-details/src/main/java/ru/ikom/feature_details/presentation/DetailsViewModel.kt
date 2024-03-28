@@ -20,11 +20,7 @@ class DetailsViewModel(
         decode()
     }
 
-    fun init() {
-        decode()
-    }
-
-    private fun decode() = viewModelScope.launch(dispatcher) {
+    fun decode() = viewModelScope.launch(dispatcher) {
         try {
             _uiState.value = DetailsUiState(product = Json.decodeFromString<CacheProductUi>(data))
         } catch (_: Exception) {

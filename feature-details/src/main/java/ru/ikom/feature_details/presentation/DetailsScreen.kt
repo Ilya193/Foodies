@@ -48,7 +48,7 @@ fun DetailsScreen(data: String, viewModel: DetailsViewModel = koinViewModel { pa
     if (uiState.isLoading)
         LoadData()
     else if (uiState.isError)
-        ErrorMessage { viewModel.init() }
+        ErrorMessage { viewModel.decode() }
     else {
         Column(
             modifier = Modifier
