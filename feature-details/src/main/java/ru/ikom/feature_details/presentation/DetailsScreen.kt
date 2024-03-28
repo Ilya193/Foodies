@@ -31,6 +31,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import ru.ikom.common.ErrorMessage
 import ru.ikom.common.LoadData
 import ru.ikom.feature_details.R
@@ -39,19 +40,15 @@ import ru.ikom.feature_details.presentation.ui.ProductInformation
 import ru.ikom.feature_details.presentation.ui.ProductsAmount
 
 @Composable
-fun DetailsScreen(data: String, viewModel: DetailsViewModel = koinViewModel()) {
+fun DetailsScreen(data: String, viewModel: DetailsViewModel = koinViewModel { parametersOf(data) }) {
     val uiState by viewModel.uiState.collectAsState()
 
     val interactionSource = remember { MutableInteractionSource() }
 
-    LaunchedEffect(Unit) {
-        viewModel.init(data)
-    }
-
     if (uiState.isLoading)
         LoadData()
     else if (uiState.isError)
-        ErrorMessage { viewModel.init(data) }
+        ErrorMessage { viewModel.init() }
     else {
         Column(
             modifier = Modifier

@@ -11,11 +11,20 @@ import ru.ikom.common.Storage
 
 class DetailsViewModel(
     private val router: DetailsRouter,
+    private val data: String,
     private val storage: Storage,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : BaseViewModel<DetailsUiState>(router, DetailsUiState(isLoading = true)) {
 
-    fun init(data: String) = viewModelScope.launch(dispatcher) {
+    init {
+        decode()
+    }
+
+    fun init() {
+        decode()
+    }
+
+    private fun decode() = viewModelScope.launch(dispatcher) {
         try {
             _uiState.value = DetailsUiState(product = Json.decodeFromString<CacheProductUi>(data))
         } catch (_: Exception) {
