@@ -1,5 +1,6 @@
 package ru.ikom.feature_catalog.presentation
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,11 +19,15 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
@@ -35,7 +40,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import ru.ikom.common.ErrorMessage
 import ru.ikom.common.LoadData
@@ -60,6 +68,17 @@ import ru.ikom.feature_catalog.presentation.ui.ProductsAmount
 @Composable
 fun CatalogScreen(viewModel: CatalogViewModel = koinViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
+
+    var showArrowUp by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val listState = rememberLazyGridState()
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { listState.firstVisibleItemIndex }
+            .collect {
+                showArrowUp = it > 3
+            }
+    }
 
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -247,7 +266,7 @@ fun CatalogScreen(viewModel: CatalogViewModel = koinViewModel()) {
                     if ((uiState.products.isNotEmpty() && uiState.searchMode || !uiState.searchMode)) {
                         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
                             val (orderButton, products) = createRefs()
-                            LazyVerticalGrid(modifier = Modifier.constrainAs(products) {
+                            LazyVerticalGrid(state = listState, modifier = Modifier.constrainAs(products) {
                                 top.linkTo(parent.top)
                                 bottom.linkTo(orderButton.top)
                                 height = Dimension.fillToConstraints
@@ -283,7 +302,15 @@ fun CatalogScreen(viewModel: CatalogViewModel = koinViewModel()) {
                     }
                 }
 
-
+                if (uiState.sum == null && showArrowUp)
+                    FloatingActionButton(
+                        modifier = Modifier.align(Alignment.BottomEnd).padding(4.dp),
+                        onClick = { scope.launch { listState.animateScrollToItem(0) } },
+                        shape = CircleShape,
+                        containerColor = Orange
+                    ) {
+                        Icon(painter = painterResource(R.drawable.arrow_upward), null)
+                    }
             }
 
             if (showBottomSheet) {
