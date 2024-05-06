@@ -1,3 +1,10 @@
-Стек: Jetpack compose, kotlinx.serialization, Koin, Lottie
+Тестовое задание. Многомодульное приложение для заказа продуктов
+Стек: Jetpack compose, kotlinx.serialization, Koin, Lottie, Jetpack navigation
+
+app - модуль, отвечающий за навигацию по фичам и за внедрение зависимостей
+common - базовые ui элементы, используемые в фичах
+feature-catalog - модуль, который отображает список продуктов с возможностью применения фильтров и поиска
+feature-details - модуль, который отображает более подробную информацию о продукте
+feature-basket - модуль, который отображает продукты, добавленные в корзину
 
 https://github.com/Ilya193/Foodies/assets/40058340/d9283185-a3ff-4d13-96b0-4809c7fb0126
